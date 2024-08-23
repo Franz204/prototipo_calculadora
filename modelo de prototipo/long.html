@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Longitud</title>
+    <link rel="stylesheet" href="menu.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e1f5fe; /* Fondo azul claro */
+            font-family: 'Arial', sans-serif;
+        }
+        .calculator {
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #81d4fa; /* Azul más claro */
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .calculator-display {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0277bd; /* Azul oscuro */
+        }
+        .calculator-button {
+            font-size: 1rem;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #81d4fa;
+            text-align: center;
+            cursor: pointer;
+            background: #b3e5fc;
+            color: #0277bd;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .calculator-button:hover {
+            background: #81d4fa;
+            transform: scale(1.05);
+        }
+        .calculator-input {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            font-weight: bold;
+            color: #0277bd; /* Azul oscuro */
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #81d4fa;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #4fc3f7;
+            box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+        }
+        #result {
+            font-size: 1.25rem;
+            text-align: center;
+            color: #ff7043; /* Color de resultado */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón de menú -->
+    <button class="btn btn-primary btn-toggle">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Menú lateral -->
+    <div class="menu">
+        <div class="logo">
+            <img src="" alt="Logo">
+            <span>Calculadoras</span>
+        </div>
+        <div class="menu-item">
+            <a href="standar.html">
+                <i class="bi bi-calculator me-2"></i>
+                Calculadora Estándar
+            </a>
+            <a href="cientifica.html">
+                <i class="bi bi-calculator-fill me-2"></i>
+                Calculadora Científica
+            </a>
+            <a href="fehca.html">
+                <i class="bi bi-calendar me-2"></i>
+                Cálculo de Fecha
+            </a>
+        </div>
+        <div class="separator">Conversor</div>
+        <div class="menu-item">
+            <a href="divisas.html">
+                <i class="bi bi-currency-exchange me-2"></i>
+                Divisas
+            </a>
+            <a href="long.html">
+                <i class="bi bi-ruler me-2"></i>
+                Longitud
+            </a>
+            <a href="temp.html">
+                <i class="bi bi-thermometer me-2"></i>
+                Temperatura
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="calculator">
+            <div class="calculator-display" id="display">Conversor de Longitud</div>
+            <div class="calculator-input">
+                <label for="length" class="form-label">Cantidad</label>
+                <input type="number" id="length" class="form-control" placeholder="0" step="any">
+            </div>
+            <div class="calculator-input">
+                <label for="from-length" class="form-label">De</label>
+                <select id="from-length" class="form-select">
+                    <option value="m">Metros (m)</option>
+                    <option value="km">Kilómetros (km)</option>
+                    <option value="mi">Millas (mi)</option>
+                </select>
+            </div>
+            <div class="calculator-input">
+                <label for="to-length" class="form-label">A</label>
+                <select id="to-length" class="form-select">
+                    <option value="m">Metros (m)</option>
+                    <option value="km">Kilómetros (km)</option>
+                    <option value="mi">Millas (mi)</option>
+                </select>
+            </div>
+            <div class="calculator-button" id="convert">Convertir</div>
+            <div class="calculator-display" id="result"></div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+    <script>
+        // Factores de conversión
+        const conversionFactors = {
+            'm': {
+                'm': 1,
+                'km': 0.001,
+                'mi': 0.000621371
+            },
+            'km': {
+                'm': 1000,
+                'km': 1,
+                'mi': 0.621371
+            },
+            'mi': {
+                'm': 1609.34,
+                'km': 1.60934,
+                'mi': 1
+            }
+        };
+
+        document.getElementById('convert').addEventListener('click', () => {
+            const length = parseFloat(document.getElementById('length').value);
+            const fromLength = document.getElementById('from-length').value;
+            const toLength = document.getElementById('to-length').value;
+
+            if (isNaN(length)) {
+                document.getElementById('result').textContent = 'Por favor, ingrese una cantidad válida.';
+                return;
+            }
+
+            if (fromLength === toLength) {
+                document.getElementById('result').textContent = 'La unidad de origen y destino deben ser diferentes.';
+                return;
+            }
+
+            const convertedLength = length * conversionFactors[fromLength][toLength];
+            document.getElementById('result').textContent = `${length} ${fromLength} = ${convertedLength.toFixed(4)} ${toLength}`;
+        });
+    </script>
+    <script src="menu.js"></script>
+</body>
+</html>

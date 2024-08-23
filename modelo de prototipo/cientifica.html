@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Científica</title>
+    <link rel="stylesheet" href="menu.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        .calculator {
+            max-width: 420px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #ced4da;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .calculator-display {
+            font-size: 2rem;
+            text-align: right;
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ced4da;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+        .calculator-button {
+            font-size: 1.5rem;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .calculator-button.operator {
+            background: #007bff;
+            color: white;
+        }
+        .calculator-button.double {
+            grid-column: span 2;
+        }
+        .calculator-button.triple {
+            grid-column: span 3;
+        }
+        .calculator-button:hover {
+            background: #e2e6ea;
+        }
+        .calculator-button.operator:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón de menú -->
+    <button class="btn btn-primary btn-toggle">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Menú lateral -->
+    <div class="menu">
+        <div class="logo">
+            <img src="" alt="Logo">
+            <span>Calculadoras</span>
+        </div>
+        <div class="menu-item">
+            <a href="standar.html">
+                <i class="bi bi-calculator me-2"></i>
+                Calculadora Estándar
+            </a>
+            <a href="cientifica.html">
+                <i class="bi bi-calculator-fill me-2"></i>
+                Calculadora Científica
+            </a>
+            <a href="fehca.html">
+                <i class="bi bi-calendar me-2"></i>
+                Cálculo de Fecha
+            </a>
+        </div>
+        <div class="separator">Conversor</div>
+        <div class="menu-item">
+            <a href="divisas.html">
+                <i class="bi bi-currency-exchange me-2"></i>
+                Divisas
+            </a>
+            <a href="long.html">
+                <i class="bi bi-ruler me-2"></i>
+                Longitud
+            </a>
+            <a href="temp.html">
+                <i class="bi bi-thermometer me-2"></i>
+                Temperatura
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="calculator">
+            <div class="calculator-display" id="display">0</div>
+            <div class="calculator-buttons">
+                <div class="calculator-button double" id="clear">C</div>
+                <div class="calculator-button operator" id="divide">/</div>
+                <div class="calculator-button operator" id="multiply">*</div>
+                <div class="calculator-button operator" id="subtract">-</div>
+                <div class="calculator-button operator" id="add">+</div>
+                <div class="calculator-button double" id="square-root">√</div>
+                <div class="calculator-button double" id="square">x²</div>
+                <div class="calculator-button double" id="pi">π</div>
+                <div class="calculator-button double" id="exp">exp</div>
+                <div class="calculator-button double" id="log">log</div>
+                <div class="calculator-button double" id="ln">ln</div>
+                <div class="calculator-button double" id="factorial">n!</div>
+                <div class="calculator-button triple" id="zero">0</div>
+                <div class="calculator-button" id="decimal">.</div>
+                <div class="calculator-button triple operator" id="equals">=</div>
+                <div class="calculator-button" id="one">1</div>
+                <div class="calculator-button" id="two">2</div>
+                <div class="calculator-button" id="three">3</div>
+                <div class="calculator-button" id="four">4</div>
+                <div class="calculator-button" id="five">5</div>
+                <div class="calculator-button" id="six">6</div>
+                <div class="calculator-button" id="seven">7</div>
+                <div class="calculator-button" id="eight">8</div>
+                <div class="calculator-button" id="nine">9</div>
+                <div class="calculator-button double" id="parenthesis">( )</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+    <script>
+        const display = document.getElementById('display');
+        let currentInput = '';
+        let operator = '';
+        let firstOperand = '';
+        let awaitingSecondOperand = false;
+
+        const updateDisplay = () => {
+            display.textContent = currentInput || '0';
+        };
+
+        document.querySelectorAll('.calculator-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const value = e.target.textContent;
+
+                if (value === 'C') {
+                    currentInput = '';
+                    operator = '';
+                    firstOperand = '';
+                    awaitingSecondOperand = false;
+                } else if (['+', '-', '*', '/'].includes(value)) {
+                    if (currentInput && !awaitingSecondOperand) {
+                        firstOperand = currentInput;
+                        operator = value;
+                        awaitingSecondOperand = true;
+                        currentInput = '';
+                    }
+                } else if (value === '=') {
+                    if (operator && firstOperand) {
+                        try {
+                            currentInput = eval(`${firstOperand} ${operator} ${currentInput}`);
+                            awaitingSecondOperand = false;
+                            operator = '';
+                            firstOperand = '';
+                        } catch {
+                            currentInput = 'Error';
+                        }
+                    }
+                } else if (value === '√') {
+                    currentInput = Math.sqrt(parseFloat(currentInput));
+                } else if (value === 'π') {
+                    currentInput = Math.PI;
+                } else if (value === 'x²') {
+                    currentInput = Math.pow(parseFloat(currentInput), 2);
+                } else if (value === 'exp') {
+                    currentInput = Math.exp(parseFloat(currentInput));
+                } else if (value === 'log') {
+                    currentInput = Math.log10(parseFloat(currentInput));
+                } else if (value === 'ln') {
+                    currentInput = Math.log(parseFloat(currentInput));
+                } else if (value === 'n!') {
+                    const factorial = n => n <= 1 ? 1 : n * factorial(n - 1);
+                    currentInput = factorial(parseInt(currentInput, 10));
+                } else if (value === '( )') {
+                    // Handle parenthesis if needed
+                } else {
+                    if (value === '.' && currentInput.includes('.')) return;
+                    currentInput += value;
+                }
+
+                updateDisplay();
+            });
+        });
+    </script>
+    <script src="menu.js"></script>
+</body>
+</html>

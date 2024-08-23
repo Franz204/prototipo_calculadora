@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #e0f7fa, #b3e5fc); /* Degradado de fondo */
+            margin: 0;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #003366; /* Azul muy oscuro */
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #004080; /* Borde azul oscuro */
+            padding: 12px;
+            transition: border-color 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #ffcc00; /* Amarillo al enfocar */
+            box-shadow: 0 0 0 0.2rem rgba(255, 204, 0, 0.25); /* Sombra amarilla */
+        }
+        .btn-primary {
+            background-color: #004080; /* Azul oscuro */
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #003366; /* Azul más oscuro */
+            transform: scale(1.05); /* Efecto de aumento */
+        }
+        .btn-primary:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(0, 51, 102, 0.5); /* Sombra azul al enfocar */
+        }
+        .error-message {
+            color: #d9534f; /* Rojo para el mensaje de error */
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .login-container::before {
+            content: "";
+            display: block;
+            height: 5px;
+            background: linear-gradient(90deg, #ffcc00 0%, #ffcc00 50%, #004080 50%, #004080 100%);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .form-label {
+            color: #003366; /* Azul muy oscuro */
+            font-weight: bold;
+        }
+        .login-container .forgot-password {
+            margin-top: 15px;
+            color: #004080;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .login-container .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Inicio de Sesión</h2>
+        <form id="login-form">
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+            </div><br>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+            <p id="error-message" class="error-message mt-3"></p>
+            
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        // Contraseña en MD5: '123456'
+        const correctPasswordHash = 'e10adc3949ba59abbe56e057f20f883e'; 
+
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const passwordInput = document.getElementById('password').value;
+            const hashedPassword = CryptoJS.MD5(passwordInput).toString();
+            
+            if (hashedPassword === correctPasswordHash) {
+                sessionStorage.setItem('authenticated', 'true');
+                window.location.href = 'calculadora.html'; // Redirige a la página de calculadoras
+            } else {
+                document.getElementById('error-message').textContent = 'Contraseña incorrecta. Inténtelo de nuevo.';
+            }
+        });
+    </script>
+</body>
+</html>

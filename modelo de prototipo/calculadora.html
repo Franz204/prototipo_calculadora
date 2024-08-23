@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Calculadoras</title>
+    <link rel="stylesheet" href="menu.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body {
+            overflow-x: hidden;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #e0f7fa; /* Fondo azul claro */
+        }
+        .menu {
+            height: 100vh;
+            width: 280px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #004080; /* Azul oscuro */
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            color: white;
+        }
+        .menu.show {
+            transform: translateX(0);
+        }
+        .menu .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .menu .logo img {
+            width: 40px;
+            height: 40px;
+        }
+        .menu .logo span {
+            margin-left: 15px;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .menu a {
+            display: block;
+            color: #f8f9fa; /* Color blanco para texto */
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, padding-left 0.3s ease;
+        }
+        .menu a:hover {
+            background-color: #003366; /* Azul más oscuro */
+            padding-left: 20px;
+        }
+        .separator {
+            margin: 30px 0;
+            border-top: 1px solid #b3e5fc; /* Azul claro */
+            padding-top: 10px;
+            color: #ffcc00; /* Amarillo para el separador */
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .btn-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: #003366;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            padding: 10px;
+            font-size: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-toggle:hover {
+            background-color: #002244; /* Azul aún más oscuro */
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón de menú -->
+    <button class="btn btn-primary btn-toggle">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Menú lateral -->
+    <div class="menu">
+        <div class="logo">
+            <img src="" alt="Logo">
+            <span>Calculadoras</span>
+        </div>
+        <div class="menu-item">
+            <a href="standar.html">
+                <i class="bi bi-calculator me-2"></i>
+                Calculadora Estándar
+            </a>
+            <a href="cientifica.html">
+                <i class="bi bi-calculator-fill me-2"></i>
+                Calculadora Científica
+            </a>
+            <a href="fehca.html">
+                <i class="bi bi-calendar me-2"></i>
+                Cálculo de Fecha
+            </a>
+        </div>
+        <div class="separator">Conversor</div>
+        <div class="menu-item">
+            <a href="divisas.html">
+                <i class="bi bi-currency-exchange me-2"></i>
+                Divisas
+            </a>
+            <a href="long.html">
+                <i class="bi bi-ruler me-2"></i>
+                Longitud
+            </a>
+            <a href="temp.html">
+                <i class="bi bi-thermometer me-2"></i>
+                Temperatura
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+    <script>
+        document.querySelector('.btn-toggle').addEventListener('click', function() {
+            document.querySelector('.menu').classList.toggle('show');
+        });
+
+        // Redirigir a la página de inicio de sesión si no está autenticado
+        if (!sessionStorage.getItem('authenticated')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
